@@ -24,3 +24,13 @@ def test_seasonal_slope_accepts_series():
 
     assert result.slope == 1.0
     assert result.intercept == 5.25
+
+
+def test_seasonal_slope_preserves_masked_array_intercept():
+    values = np.ma.array([1., 10., 2., 11., 3., 12.],
+                         mask=[False, False, False, True, False, False])
+
+    result = mk.seasonal_sens_slope(values, period=2)
+
+    assert result.slope == 1.0
+    assert result.intercept == 1.75
